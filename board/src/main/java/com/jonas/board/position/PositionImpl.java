@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class PositionImpl extends Position {
 
-    public PositionImpl(Map<String, Integer> values) {
+    protected PositionImpl(Map<String, Integer> values) {
         super(values);
     }
 

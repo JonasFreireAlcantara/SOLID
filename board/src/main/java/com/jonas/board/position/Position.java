@@ -11,6 +11,10 @@ public abstract class Position {
         this.values = values;
     }
 
+    public Map<String, Integer> getValues() {
+        return this.values;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
