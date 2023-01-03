@@ -1,7 +1,9 @@
 package com.jonas.board.piece;
 
-public interface PieceFactory {
+import com.jonas.board.exception.InvalidPieceTypeException;
 
-    public Piece create(PieceType pieceType);
+public interface PieceFactory <T extends PieceType> {
+
+    public Piece create(T pieceType) throws InvalidPieceTypeException;
 
 }

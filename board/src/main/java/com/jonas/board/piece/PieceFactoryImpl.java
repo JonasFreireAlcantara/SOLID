@@ -1,10 +1,13 @@
 package com.jonas.board.piece;
 
-public class PieceFactoryImpl implements PieceFactory {
+import com.jonas.board.exception.InvalidPieceTypeException;
+import com.jonas.tictactoe.piece.TicTacToePieceType;
+
+public class PieceFactoryImpl implements PieceFactory<TicTacToePieceType> {
 
     @Override
-    public Piece create(PieceType pieceType) {
-        return new PieceImpl("");
+    public Piece create(TicTacToePieceType pieceType) throws InvalidPieceTypeException {
+        return new PieceImpl(pieceType.toString());
     }
 
 }

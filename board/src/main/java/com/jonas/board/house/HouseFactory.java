@@ -1,9 +1,9 @@
 package com.jonas.board.house;
 
-import com.jonas.board.position.PositionIdentifier;
+import com.jonas.board.position.Position;
 
 public interface HouseFactory {
 
-    public House create(PositionIdentifier positionIdentifier);
+    public House create(Position position);
 
 }

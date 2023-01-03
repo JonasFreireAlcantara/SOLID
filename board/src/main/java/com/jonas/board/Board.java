@@ -3,8 +3,10 @@ package com.jonas.board;
 import java.util.Collection;
 import java.util.Optional;
 
+import com.jonas.board.exception.NotFoundException;
 import com.jonas.board.house.House;
-import com.jonas.board.position.PositionIdentifier;
+import com.jonas.board.piece.Piece;
+import com.jonas.board.position.Position;
 
 public abstract class Board {
 
@@ -15,10 +17,23 @@ public abstract class Board {
      */
     public abstract void initialize();
 
-    public Optional<House> getHouseAtPosition(PositionIdentifier positionIdentifier) {
+    private House getHouseAtPosition(Position position) throws NotFoundException {
         return houses.stream()
-                .filter(house -> house.getPositionIdentifier().equals(positionIdentifier))
-                .findFirst();
+                .filter(house -> house.getPosition().equals(position))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("House not found."));
+    }
+
+    public Optional<Piece> getPieceAtPosition(Position position) throws NotFoundException {
+        House houseFound = this.getHouseAtPosition(position);
+
+        return Optional.of(houseFound.getPiece());
+    }
+
+    public void setPieceAtPosition(Piece piece, Position position) throws NotFoundException {
+        House houseFound = this.getHouseAtPosition(position);
+
+        houseFound.setPiece(piece);
     }
 
 }

@@ -1,15 +1,15 @@
 package com.jonas.board.house;
 
 import com.jonas.board.piece.Piece;
-import com.jonas.board.position.PositionIdentifier;
+import com.jonas.board.position.Position;
 
 public abstract class House {
 
     protected Piece piece;
-    protected PositionIdentifier positionIdentifier;
+    protected Position position;
 
-    public House(PositionIdentifier positionIdentifier) {
-        this.positionIdentifier = positionIdentifier;
+    public House(Position position) {
+        this.position = position;
     }
 
     public Piece getPiece() {
@@ -20,8 +20,8 @@ public abstract class House {
         this.piece = piece;
     }
 
-    public PositionIdentifier getPositionIdentifier() {
-        return positionIdentifier;
+    public Position getPosition() {
+        return position;
     }
 
 }

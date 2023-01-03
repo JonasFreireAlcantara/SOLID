@@ -1,13 +1,13 @@
 package com.jonas.board.house;
 
-import com.jonas.board.position.PositionIdentifier;
+import com.jonas.board.position.Position;
 
 
 public class HouseFactoryImpl implements HouseFactory {
 
     @Override
-    public House create(PositionIdentifier positionIdentifier) {
-        return new HouseImpl(positionIdentifier);
+    public House create(Position position) {
+        return new HouseImpl(position);
     }
     
 }

@@ -1,13 +1,13 @@
 package com.jonas.board.rectangular;
 
 import com.jonas.board.house.House;
-import com.jonas.board.position.PositionIdentifier;
+import com.jonas.board.position.Position;
 
 
 public class RectangularHouseImpl extends House {
 
-    public RectangularHouseImpl(PositionIdentifier positionIdentifier) {
-        super(positionIdentifier);
+    public RectangularHouseImpl(Position position) {
+        super(position);
     }
 
 }
