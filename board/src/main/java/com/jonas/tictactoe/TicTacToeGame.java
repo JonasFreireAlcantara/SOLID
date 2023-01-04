@@ -1,5 +1,6 @@
 package com.jonas.tictactoe;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -9,13 +10,13 @@ import com.jonas.board.Board;
 import com.jonas.board.exception.HouseNotFoundException;
 import com.jonas.board.piece.Piece;
 import com.jonas.board.position.Position;
-import com.jonas.board.position.PositionBuilderImpl;
 import com.jonas.tictactoe.board.TicTacToeBoardFactoryImpl;
 import com.jonas.tictactoe.exception.InvalidInputException;
 import com.jonas.tictactoe.piece.TicTacToePieceFactoryImpl;
 import com.jonas.tictactoe.piece.TicTacToePieceType;
 import com.jonas.tictactoe.player.Player;
 import com.jonas.tictactoe.player.PlayerImpl;
+import com.jonas.tictactoe.position.Position2DFactory;
 
 /**
  * TicTacToe game rules
@@ -25,14 +26,23 @@ public class TicTacToeGame {
     private Board board;
     private Player[] players;
     private Player actualPlayer;
-    private Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
+    private Position2DFactory position2DFactory;
+    private TicTacToeHelper helper;
+
+    public TicTacToeGame(Position2DFactory position2DFactory) {
+        this.scanner = new Scanner(System.in);
+        this.position2DFactory = position2DFactory;
+        this.helper = new TicTacToeHelper(scanner, position2DFactory);
+    }
 
     public void initialize() {
-        this.board = new TicTacToeBoardFactoryImpl().create();
+        this.board = new TicTacToeBoardFactoryImpl(this.position2DFactory)
+                .create();
 
         this.players = new Player[] {
-            new PlayerImpl(TicTacToePieceType.O),
-            new PlayerImpl(TicTacToePieceType.X),
+                new PlayerImpl(TicTacToePieceType.O),
+                new PlayerImpl(TicTacToePieceType.X),
         };
 
         this.actualPlayer = this.players[0];
@@ -60,10 +70,14 @@ public class TicTacToeGame {
     }
 
     private void changeActualPlayer() {
+        this.actualPlayer = this.getOtherPlayer();
+    }
+
+    private Player getOtherPlayer() {
         if (this.actualPlayer.equals(this.players[0])) {
-            this.actualPlayer = this.players[1];
+            return this.players[1];
         } else {
-            this.actualPlayer = this.players[0];
+            return this.players[0];
         }
     }
 
@@ -72,7 +86,57 @@ public class TicTacToeGame {
     }
 
     private Player getWinner() {
+        List<List<Position>> superSetOfPositions = this.helper.getAllPossibleWinPositions();
+
+        for (List<Position> positions : superSetOfPositions) {
+            Player winner = getWinnerForPositions(positions);
+            if (Objects.nonNull(winner)) {
+                return winner;
+            }
+        }
+
         return null;
+    }
+
+    private Player getWinnerForPositions(List<Position> positions) {
+        List<Optional<Piece>> optionalPieces = this.board.getPiecesAtPositions(positions);
+
+        if (this.isAllPiecesEquals(optionalPieces)) {
+            return this.getPlayerRelatedToPiece(optionalPieces.get(0).get());
+        } else {
+            return null;
+        }
+    }
+
+    private Player getPlayerRelatedToPiece(Piece piece) {
+        TicTacToePieceType pieceType = TicTacToePieceType.valueOf(piece.getValue());
+
+        if (pieceType.equals(this.actualPlayer.getPieceType())) {
+            return this.actualPlayer;
+        } else {
+            return this.getOtherPlayer();
+        }
+    }
+
+    private boolean isAllPiecesEquals(List<Optional<Piece>> optionalPieces) {
+        boolean result = false;
+
+        if (isAllPiecesPresent(optionalPieces)) {
+            Piece pieceOne = optionalPieces.get(0).get();
+            Piece pieceTwo = optionalPieces.get(1).get();
+            Piece pieceThree = optionalPieces.get(2).get();
+
+            result = pieceOne.equals(pieceTwo) && pieceTwo.equals(pieceThree);
+        } else {
+            result = false;
+        }
+
+        return result;
+    }
+
+    public boolean isAllPiecesPresent(List<Optional<Piece>> optionalPieces) {
+        return optionalPieces.stream()
+                .noneMatch((optionalPiece) -> optionalPiece.isEmpty());
     }
 
     private boolean isWin() {
@@ -91,7 +155,7 @@ public class TicTacToeGame {
     }
 
     private void doRound() throws HouseNotFoundException, InvalidInputException {
-        Position chosenPosition = this.getPositionFromUserInput();
+        Position chosenPosition = this.helper.getPositionFromUserInput();
 
         this.checkPositionValidity(chosenPosition);
 
@@ -100,15 +164,15 @@ public class TicTacToeGame {
 
     private void setPieceOfPlayerAtPosition(Player player, Position position) throws HouseNotFoundException {
         Piece piece = new TicTacToePieceFactoryImpl()
-                    .create(player.getPieceType());
+                .create(player.getPieceType());
 
         this.board.setPieceAtPosition(piece, position);
     }
 
     private void checkPositionValidity(Position chosenPosition) throws HouseNotFoundException, InvalidInputException {
         Map<String, Integer> positionValues = chosenPosition.getValues();
-        Integer x = positionValues.get("x");
-        Integer y = positionValues.get("y");
+        Integer x = positionValues.get(Position2DFactory.X);
+        Integer y = positionValues.get(Position2DFactory.Y);
 
         if ((x > 2 || x < 0) || (y > 2 || y < 0)) {
             throw new InvalidInputException("");
@@ -118,20 +182,6 @@ public class TicTacToeGame {
         if (optionalPiece.isPresent()) {
             throw new InvalidInputException("Já existe peça nesta casa.");
         }
-    }
-
-    private Position getPositionFromUserInput() throws InvalidInputException {
-        String input = this.scanner.nextLine();
-        if (input.length() != 3) {
-            throw new InvalidInputException("Entrada inválida.");
-        }
-
-        String [] entries = input.split("-");
-
-        return new PositionBuilderImpl()
-                .put("x", Integer.parseInt(entries[0]))
-                .put("y", Integer.parseInt(entries[1]))
-                .build();
     }
 
     private void showFinalResult() {

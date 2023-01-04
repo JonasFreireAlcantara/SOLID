@@ -1,7 +1,9 @@
 package com.jonas.board;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.jonas.board.exception.HouseNotFoundException;
 import com.jonas.board.house.House;
@@ -37,6 +39,13 @@ public abstract class Board {
         House houseFound = this.getHouseAtPosition(position);
 
         houseFound.setPiece(piece);
+    }
+
+    public List<Optional<Piece>> getPiecesAtPositions(Collection<Position> positions) {
+        return this.houses.stream()
+                .filter((house) -> positions.contains(house.getPosition()))
+                .map((house) -> Optional.of(house.getPiece()))
+                .collect(Collectors.toList());
     }
 
     public Collection<House> getHouses() {
