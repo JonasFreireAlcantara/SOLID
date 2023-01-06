@@ -10,7 +10,7 @@ public class TicTacToeBoardFactoryImpl implements BoardFactory {
     private Position2DFactory position2DFactory;
 
     public TicTacToeBoardFactoryImpl(Position2DFactory position2DFactory) {
-        this.position2DFactory = this.position2DFactory;
+        this.position2DFactory = position2DFactory;
     }
 
     @Override

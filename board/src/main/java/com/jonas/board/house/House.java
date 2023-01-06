@@ -1,5 +1,7 @@
 package com.jonas.board.house;
 
+import java.util.Optional;
+
 import com.jonas.board.piece.Piece;
 import com.jonas.board.position.Position;
 
@@ -12,11 +14,12 @@ public abstract class House {
         this.position = position;
     }
 
-    public Piece getPiece() {
-        return piece;
+    public Optional<Piece> getPiece() {
+        return Optional.ofNullable(piece);
     }
 
     public void setPiece(Piece piece) {
+        System.out.println("setting piece: " + piece.getValue());
         this.piece = piece;
     }
 

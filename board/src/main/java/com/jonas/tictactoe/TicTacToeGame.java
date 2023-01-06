@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import com.jonas.board.Board;
 import com.jonas.board.exception.HouseNotFoundException;
+import com.jonas.board.house.House;
 import com.jonas.board.piece.Piece;
 import com.jonas.board.position.Position;
 import com.jonas.tictactoe.board.TicTacToeBoardFactoryImpl;
@@ -50,18 +51,18 @@ public class TicTacToeGame {
 
     public void run() {
         while (!this.isGameOver()) {
-            this.changeActualPlayer();
             this.showFrame();
             this.round();
         }
-
+        
         this.showFrame();
         this.showFinalResult();
     }
-
+    
     private void round() {
         try {
             this.doRound();
+            this.changeActualPlayer();
         } catch (HouseNotFoundException e) {
             System.out.println("A posição não foi encontrada.");
         } catch (InvalidInputException e) {
@@ -86,9 +87,9 @@ public class TicTacToeGame {
     }
 
     private Player getWinner() {
-        List<List<Position>> superSetOfPositions = this.helper.getAllPossibleWinPositions();
+        List<List<Position>> allPossibleWinPositions = this.helper.getAllPossibleWinPositions();
 
-        for (List<Position> positions : superSetOfPositions) {
+        for (List<Position> positions : allPossibleWinPositions) {
             Player winner = getWinnerForPositions(positions);
             if (Objects.nonNull(winner)) {
                 return winner;
@@ -99,10 +100,10 @@ public class TicTacToeGame {
     }
 
     private Player getWinnerForPositions(List<Position> positions) {
-        List<Optional<Piece>> optionalPieces = this.board.getPiecesAtPositions(positions);
+        List<House> houses = this.board.getHousesAtPositions(positions);
 
-        if (this.isAllPiecesEquals(optionalPieces)) {
-            return this.getPlayerRelatedToPiece(optionalPieces.get(0).get());
+        if (this.isAllPiecesEquals(houses)) {
+            return this.getPlayerRelatedToPiece(houses.get(0).getPiece().get());
         } else {
             return null;
         }
@@ -118,13 +119,13 @@ public class TicTacToeGame {
         }
     }
 
-    private boolean isAllPiecesEquals(List<Optional<Piece>> optionalPieces) {
+    private boolean isAllPiecesEquals(List<House> houses) {
         boolean result = false;
 
-        if (isAllPiecesPresent(optionalPieces)) {
-            Piece pieceOne = optionalPieces.get(0).get();
-            Piece pieceTwo = optionalPieces.get(1).get();
-            Piece pieceThree = optionalPieces.get(2).get();
+        if (isAllPiecesPresent(houses)) {
+            Piece pieceOne = houses.get(0).getPiece().get();
+            Piece pieceTwo = houses.get(1).getPiece().get();
+            Piece pieceThree = houses.get(2).getPiece().get();
 
             result = pieceOne.equals(pieceTwo) && pieceTwo.equals(pieceThree);
         } else {
@@ -134,9 +135,9 @@ public class TicTacToeGame {
         return result;
     }
 
-    public boolean isAllPiecesPresent(List<Optional<Piece>> optionalPieces) {
-        return optionalPieces.stream()
-                .noneMatch((optionalPiece) -> optionalPiece.isEmpty());
+    public boolean isAllPiecesPresent(List<House> houses) {
+        return houses.stream()
+                .noneMatch((house) -> house.getPiece().isEmpty());
     }
 
     private boolean isWin() {
@@ -146,10 +147,13 @@ public class TicTacToeGame {
     private boolean isDraw() {
         return this.board.getHouses()
                 .stream()
-                .allMatch((house) -> Objects.nonNull(house.getPiece()));
+                .allMatch((house) -> house.getPiece().isPresent());
     }
 
     private void showFrame() {
+        this.board.getHouses().stream()
+                .forEach(house -> System.out.println(house.getPosition()));
+
         System.out.println(this.board.toString());
         System.out.print("\n\n>>> ");
     }

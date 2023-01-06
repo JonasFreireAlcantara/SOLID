@@ -30,14 +30,29 @@ public abstract class Position {
         Position other = (Position) obj;
         if (values == null && other.values != null) {
             return false;
-        } else if (!values.equals(other.values)) {
+        } else if (!isMapsEquals(this.values, other.values))
             return false;
-        }
 
         return true;
     }
 
+    private boolean isMapsEquals(Map<String, Integer> map1, Map<String, Integer> map2) {
+        if (!map1.keySet().equals(map2.keySet())) {
+            return false;
+        } else {
+            return map1.keySet()
+                    .stream()
+                    .allMatch(key -> map1.get(key).equals(map2.get(key)));
+        }
+    }
+
     @Override
-    public abstract String toString();
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        values.forEach(
+                (key, value) -> stringBuilder.append(key + ": " + value + " "));
+
+        return stringBuilder.toString();
+    }
 
 }

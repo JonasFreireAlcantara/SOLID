@@ -23,7 +23,7 @@ public abstract class Board {
     public abstract String toString();
 
     private House getHouseAtPosition(Position position) throws HouseNotFoundException {
-        return houses.stream()
+        return this.houses.stream()
                 .filter(house -> house.getPosition().equals(position))
                 .findFirst()
                 .orElseThrow(() -> new HouseNotFoundException("House not found."));
@@ -32,7 +32,7 @@ public abstract class Board {
     public Optional<Piece> getPieceAtPosition(Position position) throws HouseNotFoundException {
         House houseFound = this.getHouseAtPosition(position);
 
-        return Optional.of(houseFound.getPiece());
+        return houseFound.getPiece();
     }
 
     public void setPieceAtPosition(Piece piece, Position position) throws HouseNotFoundException {
@@ -41,10 +41,9 @@ public abstract class Board {
         houseFound.setPiece(piece);
     }
 
-    public List<Optional<Piece>> getPiecesAtPositions(Collection<Position> positions) {
+    public List<House> getHousesAtPositions(Collection<Position> positions) {
         return this.houses.stream()
                 .filter((house) -> positions.contains(house.getPosition()))
-                .map((house) -> Optional.of(house.getPiece()))
                 .collect(Collectors.toList());
     }
 

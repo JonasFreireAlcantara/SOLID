@@ -8,13 +8,4 @@ public class PositionImpl extends Position {
         super(values);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        values.forEach(
-                (key, value) -> stringBuilder.append(key + ": " + value + " "));
-
-        return stringBuilder.toString();
-    }
-
 }
