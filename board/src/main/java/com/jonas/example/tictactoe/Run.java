@@ -1,8 +1,8 @@
-package com.jonas.tictactoe;
+package com.jonas.example.tictactoe;
 
 import com.jonas.board.position.PositionBuilderImpl;
-import com.jonas.tictactoe.position.Position2DFactory;
-import com.jonas.tictactoe.position.Position2DFactoryImpl;
+import com.jonas.example.tictactoe.position.Position2DFactory;
+import com.jonas.example.tictactoe.position.Position2DFactoryImpl;
 
 public class Run {
 

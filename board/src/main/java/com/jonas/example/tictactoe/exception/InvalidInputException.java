@@ -1,4 +1,4 @@
-package com.jonas.tictactoe.exception;
+package com.jonas.example.tictactoe.exception;
 
 public class InvalidInputException extends Exception {
 

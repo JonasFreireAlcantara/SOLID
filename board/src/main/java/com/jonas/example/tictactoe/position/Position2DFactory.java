@@ -1,4 +1,4 @@
-package com.jonas.tictactoe.position;
+package com.jonas.example.tictactoe.position;
 
 import com.jonas.board.position.Position;
 

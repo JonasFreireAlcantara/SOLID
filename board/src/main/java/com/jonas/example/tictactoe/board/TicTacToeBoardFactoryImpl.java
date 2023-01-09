@@ -1,8 +1,8 @@
-package com.jonas.tictactoe.board;
+package com.jonas.example.tictactoe.board;
 
 import com.jonas.board.Board;
 import com.jonas.board.BoardFactory;
-import com.jonas.tictactoe.position.Position2DFactory;
+import com.jonas.example.tictactoe.position.Position2DFactory;
 
 
 public class TicTacToeBoardFactoryImpl implements BoardFactory {

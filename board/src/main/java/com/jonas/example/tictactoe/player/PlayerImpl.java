@@ -1,6 +1,6 @@
-package com.jonas.tictactoe.player;
+package com.jonas.example.tictactoe.player;
 
-import com.jonas.tictactoe.piece.TicTacToePieceType;
+import com.jonas.example.tictactoe.piece.TicTacToePieceType;
 
 public class PlayerImpl extends Player {
 

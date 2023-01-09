@@ -1,4 +1,4 @@
-package com.jonas.tictactoe.board;
+package com.jonas.example.tictactoe.board;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -8,7 +8,7 @@ import com.jonas.board.house.House;
 import com.jonas.board.house.HouseFactoryImpl;
 import com.jonas.board.piece.Piece;
 import com.jonas.board.position.Position;
-import com.jonas.tictactoe.position.Position2DFactory;
+import com.jonas.example.tictactoe.position.Position2DFactory;
 
 public class TicTacToeBoardImpl extends Board {
 

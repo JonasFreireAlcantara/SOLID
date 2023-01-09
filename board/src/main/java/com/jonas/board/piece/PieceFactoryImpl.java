@@ -1,7 +1,7 @@
 package com.jonas.board.piece;
 
 import com.jonas.board.exception.InvalidPieceTypeException;
-import com.jonas.tictactoe.piece.TicTacToePieceType;
+import com.jonas.example.tictactoe.piece.TicTacToePieceType;
 
 public class PieceFactoryImpl implements PieceFactory<TicTacToePieceType> {
 

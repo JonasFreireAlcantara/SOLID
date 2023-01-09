@@ -1,4 +1,4 @@
-package com.jonas.tictactoe.piece;
+package com.jonas.example.tictactoe.piece;
 
 import com.jonas.board.exception.InvalidPieceTypeException;
 import com.jonas.board.piece.Piece;

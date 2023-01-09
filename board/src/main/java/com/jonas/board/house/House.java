@@ -19,12 +19,11 @@ public abstract class House {
     }
 
     public void setPiece(Piece piece) {
-        System.out.println("setting piece: " + piece.getValue());
         this.piece = piece;
     }
 
     public Position getPosition() {
-        return position;
+        return this.position;
     }
 
 }

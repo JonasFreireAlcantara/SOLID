@@ -1,4 +1,4 @@
-package com.jonas.tictactoe;
+package com.jonas.example.tictactoe;
 
 import java.util.List;
 import java.util.Map;
@@ -11,13 +11,13 @@ import com.jonas.board.exception.HouseNotFoundException;
 import com.jonas.board.house.House;
 import com.jonas.board.piece.Piece;
 import com.jonas.board.position.Position;
-import com.jonas.tictactoe.board.TicTacToeBoardFactoryImpl;
-import com.jonas.tictactoe.exception.InvalidInputException;
-import com.jonas.tictactoe.piece.TicTacToePieceFactoryImpl;
-import com.jonas.tictactoe.piece.TicTacToePieceType;
-import com.jonas.tictactoe.player.Player;
-import com.jonas.tictactoe.player.PlayerImpl;
-import com.jonas.tictactoe.position.Position2DFactory;
+import com.jonas.example.tictactoe.board.TicTacToeBoardFactoryImpl;
+import com.jonas.example.tictactoe.exception.InvalidInputException;
+import com.jonas.example.tictactoe.piece.TicTacToePieceFactoryImpl;
+import com.jonas.example.tictactoe.piece.TicTacToePieceType;
+import com.jonas.example.tictactoe.player.Player;
+import com.jonas.example.tictactoe.player.PlayerImpl;
+import com.jonas.example.tictactoe.position.Position2DFactory;
 
 /**
  * TicTacToe game rules
@@ -83,7 +83,7 @@ public class TicTacToeGame {
     }
 
     private boolean isGameOver() {
-        return this.isDraw() || this.isWin();
+        return this.isWin() || this.isDraw();
     }
 
     private Player getWinner() {
@@ -151,9 +151,6 @@ public class TicTacToeGame {
     }
 
     private void showFrame() {
-        this.board.getHouses().stream()
-                .forEach(house -> System.out.println(house.getPosition()));
-
         System.out.println(this.board.toString());
         System.out.print("\n\n>>> ");
     }
@@ -167,6 +164,8 @@ public class TicTacToeGame {
     }
 
     private void setPieceOfPlayerAtPosition(Player player, Position position) throws HouseNotFoundException {
+        System.out.println("Setting piece of player: " + player + " at position: " + position);
+
         Piece piece = new TicTacToePieceFactoryImpl()
                 .create(player.getPieceType());
 
@@ -179,7 +178,7 @@ public class TicTacToeGame {
         Integer y = positionValues.get(Position2DFactory.Y);
 
         if ((x > 2 || x < 0) || (y > 2 || y < 0)) {
-            throw new InvalidInputException("");
+            throw new InvalidInputException("Entrada fora dos limites permitidos [0-2]");
         }
 
         Optional<Piece> optionalPiece = this.board.getPieceAtPosition(chosenPosition);
@@ -193,7 +192,7 @@ public class TicTacToeGame {
             System.out.println("Deu empate!");
         } else {
             Player winner = this.getWinner();
-            System.out.println(winner.getPieceType() + " venceu \\o/");
+            System.out.println("O jogador do desenho '" + winner.getPieceType() + "' venceu \\o/");
             System.out.println("Só tenho duas coisas para dizer: PARA BÉNS!");
         }
     }

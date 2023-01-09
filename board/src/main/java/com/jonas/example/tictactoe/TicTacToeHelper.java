@@ -1,12 +1,12 @@
-package com.jonas.tictactoe;
+package com.jonas.example.tictactoe;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 import com.jonas.board.position.Position;
-import com.jonas.tictactoe.exception.InvalidInputException;
-import com.jonas.tictactoe.position.Position2DFactory;
+import com.jonas.example.tictactoe.exception.InvalidInputException;
+import com.jonas.example.tictactoe.position.Position2DFactory;
 
 public class TicTacToeHelper {
 

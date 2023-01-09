@@ -18,7 +18,10 @@ public abstract class PositionBuilder {
     }
 
     public Position build() {
-        return new PositionImpl(this.values);
+        Position newPosition = new PositionImpl(this.values);
+
+        this.values = new HashMap<>();
+        return newPosition;
     }
 
 }
