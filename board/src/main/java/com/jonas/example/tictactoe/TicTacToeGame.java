@@ -9,6 +9,7 @@ import java.util.Scanner;
 import com.jonas.board.Board;
 import com.jonas.board.exception.HouseNotFoundException;
 import com.jonas.board.house.House;
+import com.jonas.board.house.HouseFactory;
 import com.jonas.board.piece.Piece;
 import com.jonas.board.position.Position;
 import com.jonas.example.tictactoe.board.TicTacToeBoardFactoryImpl;
@@ -29,16 +30,18 @@ public class TicTacToeGame {
     private Player actualPlayer;
     private Scanner scanner;
     private Position2DFactory position2DFactory;
+    private HouseFactory houseFactory;
     private TicTacToeHelper helper;
 
-    public TicTacToeGame(Position2DFactory position2DFactory) {
+    public TicTacToeGame(Position2DFactory position2DFactory, HouseFactory houseFactory) {
         this.scanner = new Scanner(System.in);
         this.position2DFactory = position2DFactory;
+        this.houseFactory = houseFactory;
         this.helper = new TicTacToeHelper(scanner, position2DFactory);
     }
 
     public void initialize() {
-        this.board = new TicTacToeBoardFactoryImpl(this.position2DFactory)
+        this.board = new TicTacToeBoardFactoryImpl(this.position2DFactory, this.houseFactory)
                 .create();
 
         this.players = new Player[] {
@@ -54,11 +57,11 @@ public class TicTacToeGame {
             this.showFrame();
             this.round();
         }
-        
+
         this.showFrame();
         this.showFinalResult();
     }
-    
+
     private void round() {
         try {
             this.doRound();
